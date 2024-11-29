@@ -1,8 +1,75 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
 
+        //ATALHO PARA ESCREVER SYSTEM  ---------  SOUT
+        int idade = 25;
+        double altura = 1.75;
+        char inicial = 'a';
+        boolean estudante = true;
+
+        Scanner morte = new Scanner(System.in);
+
+        //printf é usado para formatação de string
+        //%d identifica inteiro
+        //%2f é usado para ponto flutuante com 2 casas decimais
+        //%c é usado para caracteres
+
+        System.out.printf("Minha idade é %d anos, minha altura é %.2f metros e minha inicial é %c.\n", idade, altura, inicial);
+
+        System.out.print("Digite seu nome: ");
+        String nome = morte.nextLine(); //recebe uma linha de texto
+
+        System.out.print("digite sua idade: ");
+        int idadeUs = morte.nextInt();
+
+        System.out.println();
+        System.out.printf("nome: %s\nIdade: %d", nome, idadeUs);
+
+        morte.close();
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -16,10 +83,17 @@ public class Main {
             System.out.println("morte");
         }
 
+
+
+
+
                              //vetor
         int[] cole = {1, 2, 3, 4, 5};
         System.out.println(cole[2]);
         .length acessa a ultima posição do array
+
+
+
 
 
                             //arraylist
@@ -34,6 +108,9 @@ public class Main {
 
         System.out.println(caraio.get(0));
         System.out.println("Hello World! ");
+
+
+
 
                             //loop for
         ArrayList<String> caraio = new ArrayList<>(); //pra usar isso precisa do " import java.util.ArrayList;  "
@@ -52,6 +129,9 @@ public class Main {
         for (String nome : caraio){
             System.out.println(nome);
         }
+
+
+
 
         
                         //loop while
@@ -74,9 +154,16 @@ public class Main {
         // long => 64 bits => -9.223.372.036.854.775.808 a 9.223.372.036.854.775.807
             long varOMG = 10000000;    termina com L
 
+
+
+
                             //decimais
         //float => 32 bits => poucos numeros apos a virgula         termina com "f"
         //double => 64 bits> mais numeros
+
+
+
+
 
                             //palavras
         //String => palavras e frases
