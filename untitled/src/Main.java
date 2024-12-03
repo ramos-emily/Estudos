@@ -1,33 +1,12 @@
-import java.util.Scanner;
 
+
+
+//ATALHO PARA ESCREVER SYSTEM  ---------  SOUT
 public class Main {
     public static void main(String[] args) {
 
-        //ATALHO PARA ESCREVER SYSTEM  ---------  SOUT
-        int idade = 25;
-        double altura = 1.75;
-        char inicial = 'a';
-        boolean estudante = true;
+        System.out.println("socorro");
 
-        Scanner morte = new Scanner(System.in);
-
-        //printf é usado para formatação de string
-        //%d identifica inteiro
-        //%2f é usado para ponto flutuante com 2 casas decimais
-        //%c é usado para caracteres
-
-        System.out.printf("Minha idade é %d anos, minha altura é %.2f metros e minha inicial é %c.\n", idade, altura, inicial);
-
-        System.out.print("Digite seu nome: ");
-        String nome = morte.nextLine(); //recebe uma linha de texto
-
-        System.out.print("digite sua idade: ");
-        int idadeUs = morte.nextInt();
-
-        System.out.println();
-        System.out.printf("nome: %s\nIdade: %d", nome, idadeUs);
-
-        morte.close();
 
     }
 }
@@ -67,6 +46,89 @@ public class Main {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        int idade = 25;
+//        double altura = 1.75;
+//        char inicial = 'a';
+//        boolean estudante = true;
+//
+//        Scanner morte = new Scanner(System.in);
+//
+//        //printf é usado para formatação de string
+//        //%d identifica inteiro
+//        //%2f é usado para ponto flutuante com 2 casas decimais
+//        //%c é usado para caracteres
+//
+//        System.out.printf("Minha idade é %d anos, minha altura é %.2f metros e minha inicial é %c.\n", idade, altura, inicial);
+//
+//        System.out.print("Digite seu nome: ");
+//        String nome = morte.nextLine(); //recebe uma linha de texto
+//
+//        System.out.print("digite sua idade: ");
+//        int idadeUs = morte.nextInt();
+//
+//        System.out.println();
+//        System.out.printf("nome: %s\nIdade: %d", nome, idadeUs);
+//
+//        morte.close();
+
+
+
+
+
+
+
+
+
+
+//compilar!!
+
+//terminal comando: javac nomedoarquivo.java     EX: javac Main.java
+//javac Main.java
+//java Main
+//isso vai mostrar no terminal o seu codigo
+
+
+
+
+
+
+
+//        //casting
+//
+//        double resultado = 0.0; //casting vai cortar a faixa de representação, remover tudo q tem depois da virgula e pegar o n inteiro
+//        int resultadoInt = (int)resultado; //casting, declarei anteriormente uma variavel como double e aqui transformei em inteiro.
+//
+//        int meuInt = 10; //implicito
+//        double meuDouble = meuInt;
+//
+//        String my = "10"; //explicito
+//        int myInt = integer.parseInt(my);
+//
+//        String myString = String.valueOf(myInt); //transforma inteiro em string
 
 
 
