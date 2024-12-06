@@ -27,6 +27,5 @@ public class Main {
         System.out.printf("minha idade é %d anos, miha altura é %.2f m e minha inicial é %c.\n", idade, altura, inicial);
 
 
-
     }
 }
