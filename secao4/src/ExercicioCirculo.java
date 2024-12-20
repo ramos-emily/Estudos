@@ -9,8 +9,20 @@
 //        Entrada: Saída:
 //        150.00 A=70685.7750
 
-
+import java.util.Scanner;
 public class ExercicioCirculo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("digite o valor do raio: ");
+        int raio = scanner.nextInt();
 
+        double pi = 3.14;
+        double area = pi * Math.pow(raio, 2);
+
+        System.out.printf("a area do circulo com raio %d é: %.2f", raio, area);
+
+        scanner.close();
+
+    }
 }
