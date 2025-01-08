@@ -45,8 +45,6 @@ public class geometrica {
         System.out.printf("RETANGULO: %.3f%n", areaRetangulo);
 
         scanner.close();
-
-
     }
 
 }
