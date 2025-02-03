@@ -1,7 +1,3 @@
-
-
-
-
 import java.util.Scanner;
 
 public class BasicConta {
@@ -15,8 +11,10 @@ public class BasicConta {
         System.out.println("A subtração deles é: ");
         int menos = scanner.nextInt();
 
-        System.out.println("A multiplicação dles é");
+        System.out.println("A multiplicação deles é: ");
+        int multi = scanner.nextInt();
+
+        System.out.println("A divisão dele é: ");
+
     }
-
-
 }
