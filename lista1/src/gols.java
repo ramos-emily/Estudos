@@ -24,16 +24,6 @@ public class gols {
 
 
 
-
-
-
-
-
-
-
-
-
-
 //Exercício 03:
 //
 //        FUP que peça a quantidade de gols de um timeA e de um timeB em um jogo qualquer.
