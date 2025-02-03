@@ -13,7 +13,7 @@ public class gols {
         int ponte = gols2;
 
         if (corintia < ponte){
-            System.out.println("macaca ganhouuuuu");
+            System.out.println("macaca ganhouuuuu ");
         } else if (corintia == ponte) {
             System.out.println("empatou vei");
         }else {
