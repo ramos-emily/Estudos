@@ -18,11 +18,11 @@ public class BasicConta {
 
 
         System.out.printf("A soma deles é: %d", soma );
-        System.out.printf("A subtração deles é: %d", sub);
-        System.out.printf("A multiplicação deles é: %d", mult);
-        System.out.printf("A divisão dele é: %d", div);
-        System.out.printf("O primeiro numero elevado pelo segundo é: %d", elev);
-        System.out.printf("O resto da divisao é: %d", resto);
+        System.out.printf("\nA subtração deles é: %d", sub);
+        System.out.printf("\nA multiplicação deles é: %d", mult);
+        System.out.printf("\nA divisão dele é: %d", div);
+        System.out.printf("\nO primeiro numero elevado pelo segundo é: %d", elev);
+        System.out.printf("\nO resto da divisao é: %d", resto);
 
         if (div <= 0){
             System.out.println("precisa ser um numero maior que zero!");
