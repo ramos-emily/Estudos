@@ -3,8 +3,14 @@ import java.util.Scanner;
 public class palindromo {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        System.out.print("digite uma palavra: ");
+        String palavra = scanner.nextLine();
+        System.out.println(palavra);
+        reverso = new StringBuilder().reverse().toString();
+        System.out.print(reverso);
 
 
+        scanner.close();
     }
 
 }
