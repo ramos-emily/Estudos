@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, status, Response, Depends
 from typing import Optional, Any
 from models import Sherk
 
-app = FastAPI(title="API ducks", version="0.0.1", description="Api de pato poruqe a yasmin é doida")
+app = FastAPI(title="API sherk", version="0.0.1", description="Api do sherk porque eu gosto muito")
 
 def fake_db():
     try:
@@ -15,28 +15,28 @@ characters = {
         "name": "Sherk",
         "color": "Green",
         "species": "Ogre",
-        # "photo": "https://uploads.jovemnerd.com.br/wp-content/uploads/2023/03/vitrine_shrek_e_mais_animacoes_dreamworks_deixarao_netflix_nerdbunker__2z154j.jpg?ims=1210x544/filters:quality(75)",
+        "photo": "https://uploads.jovemnerd.com.br/wp-content/uploads/2023/03/vitrine_shrek_e_mais_animacoes_dreamworks_deixarao_netflix_nerdbunker__2z154j.jpg?ims=1210x544/filters:quality(75)",
         "catchphrase": "Cebola tem camadas!",
     },
     2: {
         "name": "Burro",
         "color": "Gray",
         "species": "donkey",
-        # "photo": "https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2024/06/24163743/Shrek-Burro-Spin-Off.jpg",
+        "photo": "https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2024/06/24163743/Shrek-Burro-Spin-Off.jpg",
         "catchphrase": "Quando tudo isso acabar vou precisar de terapia, olha só meu olho piscando ;(",
     },
     3: {
         "name": "Fiona",
         "color": "Green",
         "species": "Ogre",
-        # "photo": "https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/22512340/maxresdefault.jpg?quality=90&strip=all&crop=7.8125%2C0%2C84.375%2C100&w=1200",
+        "photo": "https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/22512340/maxresdefault.jpg?quality=90&strip=all&crop=7.8125%2C0%2C84.375%2C100&w=1200",
         "catchphrase": "A noite de um dia, de dia de outro",
     },
     4: {
         "name": "Gato de botas",
         "color": "Orange",
         "species": "Cat",
-        # "photo": "https://queenbi.wordpress.com/wp-content/uploads/2010/07/gordo.jpg",
+        "photo": "https://queenbi.wordpress.com/wp-content/uploads/2010/07/gordo.jpg",
         "catchphrase": "Sou eu...",
     }
 }
