@@ -1,84 +1,89 @@
-from fastapi import FastAPI, HTTPException, status, Response, Depends
-from typing import Optional, Any
-from models import Sherk
+from fastapi import FastAPI, HTTPException, status, Response, Depends, Query
+from typing import Optional, Any, Annotated
+from sqlmodel import Field, Session, SQLModel, create_engine, select
+from models import Sherk, SherkUpdate
+
+
+sqlite_file_name = "database.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+connect_args = {"check_same_thread": False}
+engine = create_engine(sqlite_url, connect_args=connect_args)
+
+
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+
+SessionDep = Annotated[Session, Depends(get_session)]
+
 
 app = FastAPI(title="API sherk", version="0.0.1", description="Api do sherk porque eu gosto muito")
 
-def fake_db():
-    try:
-        print("Conectando")
-    finally:
-        print("Saindo...")
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
 
-characters = {
-    1: {
-        "name": "Sherk",
-        "color": "Green",
-        "species": "Ogre",
-        "photo": "https://uploads.jovemnerd.com.br/wp-content/uploads/2023/03/vitrine_shrek_e_mais_animacoes_dreamworks_deixarao_netflix_nerdbunker__2z154j.jpg?ims=1210x544/filters:quality(75)",
-        "catchphrase": "Cebola tem camadas!",
-    },
-    2: {
-        "name": "Burro",
-        "color": "Gray",
-        "species": "donkey",
-        "photo": "https://fly.metroimg.com/upload/q_85,w_700/https://uploads.metroimg.com/wp-content/uploads/2024/06/24163743/Shrek-Burro-Spin-Off.jpg",
-        "catchphrase": "Quando tudo isso acabar vou precisar de terapia, olha só meu olho piscando ;(",
-    },
-    3: {
-        "name": "Fiona",
-        "color": "Green",
-        "species": "Ogre",
-        "photo": "https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/22512340/maxresdefault.jpg?quality=90&strip=all&crop=7.8125%2C0%2C84.375%2C100&w=1200",
-        "catchphrase": "A noite de um dia, de dia de outro",
-    },
-    4: {
-        "name": "Gato de botas",
-        "color": "Orange",
-        "species": "Cat",
-        "photo": "https://queenbi.wordpress.com/wp-content/uploads/2010/07/gordo.jpg",
-        "catchphrase": "Sou eu...",
-    }
-}
 
 @app.get("/")
 async def raiz():
     return{"funcionaporfavorveir"}
 
-@app.get("/characters", description="Retorna os personagens do banco imaginario")
-async def get_characters(db: Any = Depends(fake_db)):
-    return characters
 
-@app.get("/characters/{character_id}")
-async def get_character(character_id: int):
-    try:
-        character = characters[character_id]
-        return character
-    except KeyError:
+#listar
+@app.get("/sherks", description="Retorna os personagens do banco imaginario")
+async def get_sherks(session: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100, ) -> list[Sherk]:
+    sherks = session.exec(select(Sherk).offset(offset).limit(limit)).all()
+    return sherks
+
+
+
+@app.get("/sherks/{sherk_id}")
+async def get_sherk(sherk_id: int, session: SessionDep) -> Sherk:
+    sherk = session.get(Sherk, sherk_id)
+    if not sherk:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+    return sherk
 
-@app.post("/characters", status_code=status.HTTP_201_CREATED)
-async def post_character(character: Optional[Sherk] = None):
-    next_id = len(characters) + 1
-    characters[next_id] = character
-    del character.id
-    return character
 
-@app.put("/characters/{character_is}", status_code=status.HTTP_202_ACCEPTED)
-async def put_character(character_id: int, character):
-    if character_id in characters:
-        characters[character_id] = character
-        character_id = character_id
-        del character_id
-        return character
-    else:
+@app.post("/sherks", status_code=status.HTTP_201_CREATED)
+async def post_sherk(sherk: Sherk, session: SessionDep) -> Sherk:
+    session.add(sherk)
+    session.commit()
+    session.refresh(sherk)
+    return sherk
+  
+#NAO TA FUNCIONANDO ISSO AQUI!!!!
+
+# @app.patch("/sherks/{sherk_id}", response_model=Sherk)
+# def update_sherk(sherk_id: int, sherk_update: SherkUpdate, session = Depends(get_session)):
+#     sherk_db = session.get(Sherk, sherk_id)
+#     if not sherk_db:
+#         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+#     sherk_data = SherkUpdate.model_dump(exclude_unset=True)
+#     for key, value in sherk_data.items():
+#         setattr(sherk, key, value)
+#     session.add(sherk_db)
+#     session.commit()
+#     session.refresh(sherk_db)
+#     return sherk_db
+
+
+
+@app.delete("/sherks/{sherk_id}")
+async def delete_sherk(sherk_id: int, session: SessionDep):
+    sherk = session.get(Sherk, sherk_id)
+    if not sherk:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+    session.delete(sherk)
+    session.commit()
+    return {"ok": True}
 
-@app.delete("/characters/{character_id}")
-async def delete_character(character_id: int):
-    if character_id in characters:
-        del characters[character_id]
-        return Response(status_code=status.HTTP_204_NO_CONTENT)
-    else:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+    
 
