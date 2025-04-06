@@ -1,7 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-class Sherk(SQLModel, table=True):
+class Shrek(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str
     color: str
@@ -9,7 +9,7 @@ class Sherk(SQLModel, table=True):
     photo: str
     catchphrase: str
 
-class SherkUpdate(SQLModel, table=True):
+class ShrekUpdate(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str 
     color: str 
