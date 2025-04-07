@@ -1,7 +1,9 @@
-from fastapi import FastAPI, HTTPException, status, Response, Depends, Query
+from fastapi import FastAPI, HTTPException, status, Response, Depends, Query, Request
 from typing import Optional, Any, Annotated
+from fastapi.templating import Jinja2Templates
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from models import Shrek, ShrekUpdate
+from fastapi.staticfiles import StaticFiles
 
 
 sqlite_file_name = "database.db"
@@ -9,7 +11,6 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 connect_args = {"check_same_thread": False}
 engine = create_engine(sqlite_url, connect_args=connect_args)
-
 
 
 def create_db_and_tables():
@@ -25,6 +26,8 @@ SessionDep = Annotated[Session, Depends(get_session)]
 
 
 app = FastAPI(title="API shrek", version="0.0.1", description="Api do shrek porque eu gosto muito")
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.on_event("startup")
 def on_startup():
@@ -32,13 +35,13 @@ def on_startup():
 
 
 @app.get("/")
-async def raiz():
-    return{"funcionaporfavorveir"}
+async def raiz(request: Request, session: SessionDep):
+    shreks = session.exec(select(Shrek)).all() 
+    return templates.TemplateResponse("home.html", {"request": request, "shreks": shreks})
 
 
-#listar
-@app.get("/shreks", description="Retorna os personagens do banco imaginario")
-async def get_shreks(session: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100, ) -> list[Shrek]:
+@app.get("/shreks")
+async def get_shreks(session: SessionDep, offset: int = 0, limit: Annotated[int, Query(le=100)] = 100):
     shreks = session.exec(select(Shrek).offset(offset).limit(limit)).all()
     return shreks
 

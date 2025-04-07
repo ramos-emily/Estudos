@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('/static/fonts/custom-font.ttf');
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <img class="logo" 
+            src="/static/images/logo.png"
+            alt="Logo Shrek" />
+        </div>
+        <h1>Bem-vindo ao Mundo de Shrek!</h1>
+    </header>
+    
+    <section>
+        <h2>Personagens</h2>
+        <div class="characters">
+            {% for shrek in shreks %}
+                <div class="character-card">
+                    <img src="/static/images/{{ shrek.photo }}" alt="{{ shrek.name }}" class="character-photo">
+                    <h3>{{ shrek.name }}</h3>
+                    <p><strong>Cor:</strong> {{ shrek.color }}</p>
+                    <p><strong>Espécie:</strong> {{ shrek.species }}</p>
+                    <p><strong>Frase de Efeito:</strong> "{{ shrek.catchphrase }}"</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <footer>
+        <p>© 2025 Mundo de Shrek</p>
+    </footer>
+</body>
+</html>
