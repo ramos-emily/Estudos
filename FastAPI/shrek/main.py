@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from models import Shrek, ShrekUpdate
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 
 
 sqlite_file_name = "database.db"
@@ -26,6 +27,7 @@ SessionDep = Annotated[Session, Depends(get_session)]
 
 
 app = FastAPI(title="API shrek", version="0.0.1", description="Api do shrek porque eu gosto muito")
+
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -51,7 +53,7 @@ async def get_shreks(session: SessionDep, offset: int = 0, limit: Annotated[int,
 async def get_shrek(shrek_id: int, session: SessionDep) -> Shrek:
     shrek = session.get(Shrek, shrek_id)
     if not shrek:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não (noti faundi)")
     return shrek
 
 
@@ -67,7 +69,7 @@ async def post_sherk(shrek: Shrek, session: SessionDep) -> Shrek:
 def update_sherk(sherk_id: int, sherk_update: ShrekUpdate, session: SessionDep):
     shrek_db = session.get(Shrek, sherk_id)
     if not shrek_db:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não (noti faundi)")
     shrek_data = sherk_update.model_dump(exclude_unset=True)
     for key, value in shrek_data.items():
         setattr(shrek_db, key, value)  
@@ -82,10 +84,32 @@ def update_sherk(sherk_id: int, sherk_update: ShrekUpdate, session: SessionDep):
 async def delete_shrek(shrek_id: int, session: SessionDep):
     shrek = session.get(Shrek, shrek_id)
     if not shrek:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Que personagem se ta procurando fi, tem esse ai não (noti faundi)")
     session.delete(shrek)
     session.commit()
     return {"ok": True}
 
+
+@app.get("/form/add", response_class=HTMLResponse)
+async def show_add_form(request: Request):
+    return templates.TemplateResponse("form.html", {
+        "request": request,
+        "shrek": None,
+        "edit": False
+    })
+
+@app.get("/form/edit/{shrek_id}", response_class=HTMLResponse)
+async def show_edit_form(shrek_id: int, request: Request, session: SessionDep):
+    shrek = session.get(Shrek, shrek_id)
+    if not shrek:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Que personagem se tá procurando fi, tem esse aí não (noti faundi)"
+        )
+    return templates.TemplateResponse("form.html", {
+        "request": request,
+        "shrek": shrek,
+        "edit": True
+    })
     
 
