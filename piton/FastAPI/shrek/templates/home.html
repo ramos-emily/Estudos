@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo de Shrek</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <style>
+        @font-face {
+            font-family: 'CustomFont';
+            src: url('/static/fonts/custom-font.ttf');
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img class="logo" src="/static/images/logo.png" alt="Logo Shrek" />
+        </div>
+        <h1>Bem-vindo ao Mundo de Shrek!</h1>
+    </header>
+    
+    <section class="character-section">
+        <h2>Personagens</h2>
+
+        <button onclick="location.href='/form/add'" class="btn-add">Adicionar Personagem</button>
+
+        <div class="characters">
+            {% for shrek in shreks %}
+                <div class="character-card">
+                    <img src="{{ shrek.photo }}" alt="Foto de {{ shrek.name }}" class="character-photo">
+                    <h3>{{ shrek.name }}</h3>
+                    <p><strong>Cor:</strong> {{ shrek.color }}</p>
+                    <p><strong>Espécie:</strong> {{ shrek.species }}</p>
+                    <p><strong>Frase de Efeito:</strong> "{{ shrek.catchphrase }}"</p>
+
+                    <div class="button-group">
+                        <button onclick="location.href='/form/edit/{{ shrek.id }}'" class="btn-edit">Editar</button>
+                        <form action="/shreks/{{ shrek.id }}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir?');">
+                            <input type="hidden" name="_method" value="delete">
+                            <button type="submit" class="btn-delete">Excluir</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Mundo de Shrek. O melhor filme é o shrek para sempre.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll("form").forEach(form => {
+            if (form.querySelector("input[name='_method']")?.value === "delete") {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const url = form.action;
+                    const res = await fetch(url, { method: "DELETE" });
+                    if (res.ok) window.location.reload();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

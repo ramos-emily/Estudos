@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ "Editar" if edit else "Adicionar" }} Personagem</title>
+</head>
+</head>
+<body>
+    <h1>{{ "Editar" if edit else "Adicionar" }} Personagem</h1>
+    <form id="shrekForm">
+        <label>Nome: <input type="text" name="name" value="{{ shrek.name if shrek else '' }}"></label><br>
+        <label>Cor: <input type="text" name="color" value="{{ shrek.color if shrek else '' }}"></label><br>
+        <label>Espécie: <input type="text" name="species" value="{{ shrek.species if shrek else '' }}"></label><br>
+        <label>Foto (arquivo): <input type="text" name="photo" value="{{ shrek.photo if shrek else '' }}"></label><br>
+        <label>Frase: <input type="text" name="catchphrase" value="{{ shrek.catchphrase if shrek else '' }}"></label><br>
+        <button type="submit">{{ "Salvar Alterações" if edit else "Adicionar" }}</button>
+        <button onclick="location.href='/'" type="button">Cancelar</button>
+    </form>
+
+    <script>
+        document.getElementById('shrekForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const form = e.target;
+            const data = Object.fromEntries(new FormData(form));
+            const urlId = {{ shrek.id if edit else 'null' }};
+            const endpoint = urlId ? `/shreks/${urlId}` : "/shreks";
+            const method = urlId ? "PATCH" : "POST";
+    
+            const res = await fetch(endpoint, {
+                method: method,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+    
+            if (res.ok) {
+                window.location.href = "/";
+            } else {
+                alert("Erro ao salvar personagem");
+            }
+        });
+    </script>
+    
+</body>
+</html>
