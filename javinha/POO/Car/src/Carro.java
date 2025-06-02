@@ -17,21 +17,21 @@ public class Carro {
     }
 
     public void ligar() {
-        System.out.println("bla bla blabla" + this.modelo + "ligou.");
+        System.out.println("vruummm" + this.modelo + "ligou.");
     }
 
     public void acelerar(int incremento){
         this.velocAtual += incremento;
-        System.out.println("bla bla blabla" + this.velocAtual + "KM");
+        System.out.println("vruummm " + this.velocAtual + "KM");
     }
 
     public void frear(int decremento){
         if (this.velocAtual - decremento >= 0){
             this.velocAtual -= decremento;
-            System.out.println("bla bla blabla" + this.velocAtual + "KM");
+            System.out.println("vruummm " + this.velocAtual + "KM");
         }else {
             this.velocAtual = 0;
-            System.out.println("paroooowww");
+            System.out.println("paroooowww ");
         }
     }
     public void desligar(){
@@ -43,7 +43,7 @@ public class Carro {
         System.out.println("marca" + this.marca);
         System.out.println("modelo" + this.modelo);
         System.out.println("cor" + this.cor);
-        System.out.println("rapidao: " + this.velocAtual + "KM/h");
+        System.out.println("rapidao: " + this.velocAtual + " KM/h");
         System.out.println("--------------------");
     }
 
