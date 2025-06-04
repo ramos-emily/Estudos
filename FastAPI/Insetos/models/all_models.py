@@ -1,1 +1,1 @@
-from models.Insetos_model import InsetosModel
+from models.Insetos_model import InsetoModel

@@ -3,7 +3,7 @@ from core.configs import settings
 from api.v1.api import api_router
 
 app = FastAPI(title="API dos Insetos")
-app.include_router(api_router, prefix=settings.API_v1_STR)
+app.include_router(api_router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
 

@@ -5,8 +5,8 @@ class InsetoModel(settings.DBBaseModel):
     __tablename__ = "insetos"
 
     id: int = Column(Integer(), primary_key=True, autoincrement=True)
-    name: int = Column(String(256))
-    lifetime: int = Column(Integer())
+    name: str = Column(String(256))
+    lifetime: str = Column(String(256))
     photo: str = Column(String(256))
     size: float = Column(Float())
     diet: str = Column(String(256))

@@ -1,6 +1,6 @@
 from core.configs import settings
 from core.database import engine
-from models import all_models
+from models import Insetos_model
 
 
 async def create_tables() -> None:

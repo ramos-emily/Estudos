@@ -1,83 +1,97 @@
+from typing import List
+from fastapi import APIRouter, status, Depends, HTTPException, Response
 
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from models.Insetos_model import InsetoModel
+from schemas.insetos_schemas import InsetoSchema, InsetoUpdateSchema
+from core.deps import get_session
 
+router = APIRouter()
 
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=InsetoSchema)
+async def post_inseto(inseto: InsetoSchema, db: AsyncSession = Depends(get_session)):
+    novo_inseto = InsetoModel(name=inseto.name, lifetime=inseto.lifetime, photo=inseto.photo, size=inseto.size, diet=inseto.diet, extinct=inseto.extinct, curiosity=inseto.curiosity)
 
+    db.add(novo_inseto)
 
-# from typing import List
-# from fastapi import APIRouter, status, Depends, HTTPException, Response
+    await db.commit()
 
-# from sqlalchemy.ext.asyncio import AsyncSession
-# from sqlalchemy.future import select
-# from models.instrutores_model import InstrutorModel
-# from schemas.instrutor_schemas import InstrutorSchema
-# from core.deps import get_session
+    return novo_inseto
 
-# router = APIRouter()
+@router.get("/", response_model=List[InsetoSchema])
+async def get_inseto(db: AsyncSession = Depends(get_session)):
+    async with db as session:
+        query = select(InsetoModel)
+        result = await session.execute(query)
 
-# @router.post("/", status_code=status.HTTP_201_CREATED, response_model=InstrutorSchema)
-# async def post_instrutor(instrutor: InstrutorSchema, db: AsyncSession = Depends(get_session)):
-#     novo_instrutor = InstrutorModel(nome=instrutor.nome, idade=instrutor.idade, materia=instrutor.materia, foto=instrutor.foto)
+        insetos: List[InsetoModel] = result.scalars().all()
 
-#     db.add(novo_instrutor)
+        return insetos
 
-#     await db.commit()
+@router.get("/{inseto_id}", response_model=InsetoSchema)
+async def get_inseto(inseto_id: int, db: AsyncSession = Depends(get_session)):
+    async with db as session:
+        query = select(InsetoModel).filter(InsetoModel.id == inseto_id)
 
-#     return novo_instrutor
+        result = await session.execute(query)
 
-# @router.get("/", response_model=List[InstrutorSchema])
-# async def get_instrutor(db: AsyncSession = Depends(get_session)):
-#     async with db as session:
-#         query = select(InstrutorModel)
-#         result = await session.execute(query)
+        inseto = result.scalar_one_or_none()
 
-#         instrutores: List[InstrutoresModel] = result.scalars().all()
+        if inseto:
+            return inseto
+        else:
+            raise HTTPException(detail="Inseto nao incontrado", status_code=status.HTTP_404_NOT_FOUND)
 
-#         return instrutores
+@router.put("/{inseto_id}", response_model=InsetoSchema, status_code=status.HTTP_202_ACCEPTED)
+async def put_inseto(inseto_id: int, inseto: InsetoSchema, db:AsyncSession = Depends(get_session)):
+        async with db as session:
+            query = select(InsetoModel).filter(InsetoModel.id == inseto_id)
+            result = await session.execute(query)
+            inseto_up = result.scalar_one_or_none()
 
-# @router.get("/{instrutor_id}", response_model=InstrutorSchema)
-# async def get_instrutor(instrutor_id: int, db: AsyncSession = Depends(get_session)):
-#     async with db as session:
-#         query = select(InstrutorModel).filter(InstrutorModel.id == instrutor_id)
+        if inseto_up:
+            inseto_up.nome = inseto.nome
+            inseto_up.idade = inseto.idade
+            inseto_up.materia = inseto.materia
+            inseto_up.foto = inseto.foto
 
-#         result = await session.execute(query)
-
-#         instrutor = result.scalar_one_or_none()
-
-#         if instrutor:
-#             return instrutor
-#         else:
-#             raise HTTPException(detail="Instrutor nao incontrado", status_code=status.HTTP_404_NOT_FOUND)
-
-# @router.put("/{instrutor_id}", response_model=InstrutorSchema, status_code=status.HTTP_202_ACCEPTED)
-# async def put_instrutor(instrutor_id: int, instrutor: InstrutorSchema, db:AsyncSession = Depends(get_session)):
-#         async with db as session:
-#             query = select(InstrutorModel).filter(InstrutorModel.id == instrutor_id)
-#             result = await session.execute(query)
-#             instrutor_up = result.scalar_one_or_none()
-
-#         if instrutor_up:
-#             instrutor_up.nome = instrutor.nome
-#             instrutor_up.idade = instrutor.idade
-#             instrutor_up.materia = instrutor.materia
-#             instrutor_up.foto = instrutor.foto
-
-#             await session.commit()
-#             return instrutor_up
-#         else:
-#             raise HTTPException(detail="Instrutor nao encontrado", status_code=status.HTTP_404_NOT_FOUND)
-
-# @router.delete("/{instrutor_id}", status_code=status.HTTP_204_NO_CONTENT)
-# async def delete_instrutor(instrutor_id: int, db: AsyncSession = Depends(get_session)):
-#     async with db as session:
-#         query = select(InstrutorModel).filter(InstrutorModel.id == instrutor_id)
-#         result = await session.execute(query)
-#         instrutor_del = result.scalar_one_or_none()
+            await session.commit()
+            return inseto_up
+        else:
+            raise HTTPException(detail="Inseto nao encontrado", status_code=status.HTTP_404_NOT_FOUND)
         
-#         if instrutor_del:
-#             await session.delete(instrutor_del)
-#             await session.commit()
-#             return Response()
-#         else:
-#             raise HTTPException(detail="Instrutor nao encontrado", status_code=status.HTTP_404_NOT_FOUND)
+@router.patch("/{inseto_id}", response_model=InsetoSchema, status_code=status.HTTP_202_ACCEPTED)
+async def patch_inseto(inseto_id: int, inseto: InsetoUpdateSchema, db: AsyncSession = Depends(get_session)):
+    async with db as session:
+        query = select(InsetoModel).filter(InsetoModel.id == inseto_id)
+        result = await session.execute(query)
+        inseto_db = result.scalar_one_or_none()
+
+        if not inseto_db:
+            raise HTTPException(detail="Inseto nao encontrado", status_code=status.HTTP_404_NOT_FOUND)
+
+        update_data = inseto.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(inseto_db, key, value)
+
+        await session.commit()
+        await session.refresh(inseto_db)
+        return inseto_db   
+
+
+@router.delete("/{inseto_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_inseto(inseto_id: int, db: AsyncSession = Depends(get_session)):
+    async with db as session:
+        query = select(InsetoModel).filter(InsetoModel.id == inseto_id)
+        result = await session.execute(query)
+        inseto_del = result.scalar_one_or_none()
+        
+        if inseto_del:
+            await session.delete(inseto_del)
+            await session.commit()
+            return Response()
+        else:
+            raise HTTPException(detail="Inseto nao encontrado", status_code=status.HTTP_404_NOT_FOUND)
 
 
