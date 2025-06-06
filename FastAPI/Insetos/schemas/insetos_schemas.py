@@ -20,13 +20,13 @@ class InsetosSchemaSenha(InsetoSchema):
     password: int
 
 class InsetoUpdateSchema(BaseModel):
-    name: Optional[str]
-    lifetime: Optional[int]
-    photo: Optional[str]
-    size: Optional[float]
-    diet: Optional[str]
-    extinct: Optional[bool]
-    curiosity: Optional[str]
+    name: Optional[str] = None
+    lifetime: Optional[int] = None
+    photo: Optional[str] = None
+    size: Optional[float] = None
+    diet: Optional[str] = None
+    extinct: Optional[bool] = None
+    curiosity: Optional[str] = None
 
 
     
