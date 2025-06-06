@@ -15,7 +15,5 @@ class InsetoModel(settings.DBBaseModel):
     curiosity: str = Column(String(256))
 
     classe_id = Column(Integer, ForeignKey("classes.id"))
-    classe = relationship("classeModel", back_populates="insetos")
+    classes = relationship("ClasseModel", back_populates="insetos")
 
-
-    

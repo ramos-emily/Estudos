@@ -8,4 +8,4 @@ class ClasseModel(settings.DBBaseModel):
     id: int = Column(Integer, primary_key=True, autoincrement=True)
     nome: str = Column(String(100), nullable=False)
 
-    insetos = relationship("InsetoModel", back_populates="classe")
+    insetos = relationship("InsetoModel", back_populates="classes")

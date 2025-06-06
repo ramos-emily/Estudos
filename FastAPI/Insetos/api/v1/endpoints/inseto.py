@@ -1,9 +1,8 @@
 from typing import List
 from fastapi import APIRouter, status, Depends, HTTPException, Response
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from models.Insetos_model import InsetoModel
+from models.all_models import InsetoModel
 from schemas.insetos_schemas import InsetoSchema, InsetoUpdateSchema
 from core.deps import get_session
 
