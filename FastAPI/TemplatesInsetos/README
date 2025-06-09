@@ -1,0 +1,113 @@
+# 🐞 Projeto API de Insetos com FastAPI
+
+Este projeto é uma API construída com **FastAPI** que permite gerenciar dados de **insetos**, suas características e curiosidades. Utiliza **SQLAlchemy** para modelagem do banco de dados e **MySQL** (via XAMPP) como SGBD.
+
+---
+
+## 📦 Tecnologias Utilizadas
+
+- FastAPI
+- Uvicorn
+- SQLAlchemy
+- Pydantic
+- MySQL (via XAMPP)
+- Alembic (opcional para migrações futuras)
+
+---
+
+## ⚙️ Instalação e Execução
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/seu-usuario/projeto-insetos.git
+cd projeto-insetos
+2. Criar e ativar ambiente virtual
+No Windows:
+
+python -m venv venv
+venv\Scripts\activate
+No Linux/macOS:
+
+python3 -m venv venv
+source venv/bin/activate
+3. Instalar as dependências
+pip install -r requirements.txt
+4. Executar a API com Uvicorn
+uvicorn main:app --reload
+Acesse a documentação automática em:
+
+Swagger UI: http://127.0.0.1:8000/docs
+
+Redoc: http://127.0.0.1:8000/redoc
+
+🛠️ Configurando o Banco de Dados com XAMPP
+1. Abrir o XAMPP Control Panel
+Inicie o MySQL e o Apache.
+
+Verifique se o MySQL está na porta 3306 (padrão).
+
+2. Acessar o phpMyAdmin
+Clique no botão "Admin" do MySQL ou acesse diretamente: http://localhost/phpmyadmin/
+
+3. Criar o Banco de Dados
+Clique em "Novo" e crie um banco com o nome desejado, por exemplo: db_insetos.
+
+4. Configurar .env (ou arquivo de conexão)
+Certifique-se que suas configurações de banco no arquivo core/configs.py (ou .env) estejam assim:
+
+python
+DATABASE_URL = "mysql+aiomysql://root:@localhost/db_insetos"
+✅ Aqui estamos usando usuário root sem senha (configuração padrão do XAMPP)
+
+5. Criar as tabelas no banco
+Execute o script:
+
+python create_tables.py
+Isso criará as tabelas definidas nos seus models (InsetoModel, ClasseModel, etc).
+
+📚 Sobre o Projeto
+A proposta do projeto é permitir o gerenciamento de insetos, com foco educativo e científico. Cada inseto possui os seguintes atributos:
+
+🆔 id: identificador único
+
+📛 name: nome do inseto
+
+⏳ lifetime: tempo de vida
+
+🖼️ photo: URL da imagem
+
+📏 size: tamanho (em cm)
+
+🍽️ diet: dieta do inseto
+
+❌ extinct: se está extinto ou não
+
+🔍 curiosity: curiosidade interessante sobre o inseto
+
+🧬 classe: categoria científica (ligação com tabela classes)
+
+🔍 Exemplo de curiosidades que podem ser registradas
+As libélulas podem voar para trás.
+
+Algumas formigas podem carregar até 50 vezes seu próprio peso.
+
+O som dos grilos é gerado pelo atrito de suas asas.
+
+Borboletas possuem sensores de gosto nos pés.
+
+✅ Funcionalidades da API
+POST /insetos/: Cadastrar novo inseto
+
+GET /insetos/: Listar todos os insetos
+
+GET /insetos/{id}: Consultar inseto por ID
+
+PUT /insetos/{id}: Atualizar todos os dados do inseto
+
+PATCH /insetos/{id}: Atualização parcial
+
+DELETE /insetos/{id}: Remover inseto
+
+📞 Contato
+Este projeto foi desenvolvido como atividade de aprendizado em FastAPI.
