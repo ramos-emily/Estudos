@@ -19,7 +19,6 @@ async def get_home(request: Request, db: AsyncSession = Depends(get_session)):
         insetos = result.scalars().all()
     return templates.TemplateResponse("home.html", {"request": request, "insetos": insetos})
 
-
 @router.post("/home", status_code=status.HTTP_201_CREATED)
 async def post_inseto(
     request: Request,
@@ -44,10 +43,8 @@ async def post_inseto(
 
     db.add(novo_inseto)
     await db.commit()
-    await db.refresh(novo_inseto)
 
-    return RedirectResponse(url="/home", status_code=status.HTTP_303_SEE_OTHER)
-
+    return RedirectResponse(url="/api/v1/inseto/home?message=Inseto cadastrado com sucesso!", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/home/delete/{inseto_id}")
 async def delete_inseto(inseto_id: int, db: AsyncSession = Depends(get_session)):
@@ -61,8 +58,7 @@ async def delete_inseto(inseto_id: int, db: AsyncSession = Depends(get_session))
         else:
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
 
-    return RedirectResponse(url="/home", status_code=status.HTTP_303_SEE_OTHER)
-
+    return RedirectResponse(url="/api/v1/inseto/home?message=Inseto excluído com sucesso!", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/home/edit/{inseto_id}", response_class=HTMLResponse)
 async def get_edit_form(inseto_id: int, request: Request, db: AsyncSession = Depends(get_session)):
@@ -73,7 +69,6 @@ async def get_edit_form(inseto_id: int, request: Request, db: AsyncSession = Dep
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
 
     return templates.TemplateResponse("edit_inseto.html", {"request": request, "inseto": inseto})
-
 
 @router.post("/home/edit/{inseto_id}")
 async def put_inseto_form(
@@ -104,10 +99,8 @@ async def put_inseto_form(
 
         await session.commit()
 
-    return RedirectResponse(url="/home", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse(url="/api/v1/inseto/home?message=Inseto atualizado com sucesso!", status_code=status.HTTP_303_SEE_OTHER)
 
-
-# Rotas originais mantidas — API JSON
 @router.get("/", response_model=List[InsetoSchema])
 async def get_inseto(db: AsyncSession = Depends(get_session)):
     async with db as session:

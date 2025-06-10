@@ -34,11 +34,11 @@ public class TesteProduto {
             carrinho.addProduto(produto, quantidade);
         }
 
-        // Mostrar resumo antes do desconto
+        // antes do desconto
         System.out.println("\nResumo do carrinho ANTES do desconto:");
         carrinho.Resumo();
 
-        // Aplicar desconto em um produto
+        // Desconto
         System.out.print("\nDigite o nome do produto para aplicar 10% de desconto: ");
         String nomeDesconto = scanner.nextLine();
 
@@ -50,7 +50,7 @@ public class TesteProduto {
             }
         }
 
-        // Mostrar resumo depois do desconto
+        // depois do desconto
         System.out.println("\nResumo do carrinho DEPOIS do desconto:");
         carrinho.Resumo();
 
@@ -59,7 +59,7 @@ public class TesteProduto {
         String nomeRemover = scanner.nextLine();
         carrinho.rmProduto(nomeRemover);
 
-        // Mostrar carrinho final
+        // carrinho final
         System.out.println("\nCarrinho final:");
         carrinho.Resumo();
 

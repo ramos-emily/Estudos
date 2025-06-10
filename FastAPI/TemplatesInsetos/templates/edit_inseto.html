@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Editar Inseto</h1>
-    <form action="/home/edit/{{ inseto.id }}" method="post">
+    <form action="/api/v1/inseto/home/edit/{{ inseto.id }}" method="post">
         <label>Nome: <input name="name" value="{{ inseto.name }}" required></label><br>
         <label>Vida útil: <input type="number" name="lifetime" value="{{ inseto.lifetime }}" required></label><br>
         <label>Foto: <input name="photo" value="{{ inseto.photo }}"></label><br>
@@ -15,6 +15,6 @@
         <label>Curiosidade: <textarea name="curiosity">{{ inseto.curiosity }}</textarea></label><br>
         <button type="submit">Salvar</button>
     </form>
-    <a href="/home">Voltar</a>
+    <a href="/api/v1/inseto/home">Voltar</a>
 </body>
 </html>
