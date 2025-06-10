@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, status, Depends, HTTPException, Response, Request, Form
+from fastapi import APIRouter, status, Depends, HTTPException, Request, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from models.all_models import InsetoModel
@@ -9,7 +9,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 router = APIRouter()
-
 templates = Jinja2Templates(directory="templates")
 
 @router.get("/home", response_class=HTMLResponse)
@@ -18,6 +17,10 @@ async def get_home(request: Request, db: AsyncSession = Depends(get_session)):
         result = await session.execute(select(InsetoModel))
         insetos = result.scalars().all()
     return templates.TemplateResponse("home.html", {"request": request, "insetos": insetos})
+
+@router.get("/cadastro", response_class=HTMLResponse)
+async def get_cadastro(request: Request):
+    return templates.TemplateResponse("cadastro.html", {"request": request})
 
 @router.post("/home", status_code=status.HTTP_201_CREATED)
 async def post_inseto(
@@ -40,10 +43,8 @@ async def post_inseto(
         extinct=extinct,
         curiosity=curiosity
     )
-
     db.add(novo_inseto)
     await db.commit()
-
     return RedirectResponse(url="/api/v1/inseto/home?message=Inseto cadastrado com sucesso!", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/home/delete/{inseto_id}")
@@ -51,13 +52,11 @@ async def delete_inseto(inseto_id: int, db: AsyncSession = Depends(get_session))
     async with db as session:
         result = await session.execute(select(InsetoModel).filter(InsetoModel.id == inseto_id))
         inseto_del = result.scalar_one_or_none()
-
         if inseto_del:
             await session.delete(inseto_del)
             await session.commit()
         else:
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
-
     return RedirectResponse(url="/api/v1/inseto/home?message=Inseto excluído com sucesso!", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/home/edit/{inseto_id}", response_class=HTMLResponse)
@@ -67,7 +66,6 @@ async def get_edit_form(inseto_id: int, request: Request, db: AsyncSession = Dep
         inseto = result.scalar_one_or_none()
         if not inseto:
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
-
     return templates.TemplateResponse("edit_inseto.html", {"request": request, "inseto": inseto})
 
 @router.post("/home/edit/{inseto_id}")
@@ -85,10 +83,8 @@ async def put_inseto_form(
     async with db as session:
         result = await session.execute(select(InsetoModel).filter(InsetoModel.id == inseto_id))
         inseto = result.scalar_one_or_none()
-
         if not inseto:
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
-
         inseto.name = name
         inseto.lifetime = lifetime
         inseto.photo = photo
@@ -96,9 +92,7 @@ async def put_inseto_form(
         inseto.diet = diet
         inseto.extinct = extinct
         inseto.curiosity = curiosity
-
         await session.commit()
-
     return RedirectResponse(url="/api/v1/inseto/home?message=Inseto atualizado com sucesso!", status_code=status.HTTP_303_SEE_OTHER)
 
 @router.get("/", response_model=List[InsetoSchema])
@@ -114,18 +108,16 @@ async def get_inseto(inseto_id: int, db: AsyncSession = Depends(get_session)):
         query = select(InsetoModel).filter(InsetoModel.id == inseto_id)
         result = await session.execute(query)
         inseto = result.scalar_one_or_none()
-
         if inseto:
             return inseto
         else:
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
 
 @router.put("/{inseto_id}", response_model=InsetoSchema, status_code=status.HTTP_202_ACCEPTED)
-async def put_inseto(inseto_id: int, inseto: InsetoSchema, db:AsyncSession = Depends(get_session)):
+async def put_inseto(inseto_id: int, inseto: InsetoSchema, db: AsyncSession = Depends(get_session)):
     async with db as session:
         result = await session.execute(select(InsetoModel).filter(InsetoModel.id == inseto_id))
         inseto_up = result.scalar_one_or_none()
-
         if inseto_up:
             for key, value in inseto.dict().items():
                 setattr(inseto_up, key, value)
@@ -139,14 +131,11 @@ async def patch_inseto(inseto_id: int, inseto: InsetoUpdateSchema, db: AsyncSess
     async with db as session:
         result = await session.execute(select(InsetoModel).filter(InsetoModel.id == inseto_id))
         inseto_db = result.scalar_one_or_none()
-
         if not inseto_db:
             raise HTTPException(detail="Inseto não encontrado", status_code=status.HTTP_404_NOT_FOUND)
-
         update_data = inseto.dict(exclude_unset=True)
         for key, value in update_data.items():
             setattr(inseto_db, key, value)
-
         await session.commit()
         await session.refresh(inseto_db)
         return inseto_db

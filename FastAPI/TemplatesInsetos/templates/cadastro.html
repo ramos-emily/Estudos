@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro de Insetos</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Cadastro de Insetos</h1>
+
+    <form action="/api/v1/inseto/home" method="post">
+        <label>Nome: <input name="name" required></label>
+        <label>Vida útil: <input type="number" name="lifetime" required></label>
+        <label>Foto: <input name="photo"></label>
+        <label>Tamanho (cm): <input type="number" name="size" required></label>
+        <label>Dieta: <input name="diet" required></label>
+        <label>Extinto: <input type="checkbox" name="extinct"></label>
+        <label>Curiosidade: <textarea name="curiosity"></textarea></label>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/api/v1/inseto/home">
+            <button type="button">Voltar para Home</button>
+        </a>
+    </div>
+</body>
+</html>

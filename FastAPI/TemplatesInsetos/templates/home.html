@@ -2,39 +2,42 @@
 <html>
 <head>
     <title>Insetos</title>
-    <script>
-        function showMessage() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get('message');
-            if (message) {
-                alert(message);
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        }
-        window.onload = showMessage;
-    </script>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Cadastro de Insetos</h1>
+    <h1>Insetos Cadastrados</h1>
 
-    <form action="/api/v1/inseto/home" method="post">
-        <label>Nome: <input name="name" required></label><br>
-        <label>Vida útil: <input type="number" name="lifetime" required></label><br>
-        <label>Foto: <input name="photo"></label><br>
-        <label>Tamanho: <input type="number" name="size" required></label><br>
-        <label>Dieta: <input name="diet" required></label><br>
-        <label>Extinto: <input type="checkbox" name="extinct"></label><br>
-        <label>Curiosidade: <textarea name="curiosity"></textarea></label><br>
-        <button type="submit">Cadastrar</button>
-    </form>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="/api/v1/inseto/cadastro">
+            <button type="button">Cadastrar Novo Inseto</button>
+        </a>
+    </div>
 
-    <h2>Insetos cadastrados</h2>
-    <ul>
+    <ul class="inseto-lista">
         {% for inseto in insetos %}
-            <li>
-                <strong>{{ inseto.name }}</strong> - {{ inseto.diet }} - {{ inseto.size }}cm
-                <a href="/api/v1/inseto/home/edit/{{ inseto.id }}">Editar</a>
-                <a href="/api/v1/inseto/home/delete/{{ inseto.id }}" onclick="return confirm('Confirmar exclusão?')">Excluir</a>
+            <li class="inseto-item">
+                <div class="inseto-info">
+                    <h2>{{ inseto.name }}</h2>
+                    <p><strong>Dieta:</strong> {{ inseto.diet }}</p>
+                    <p><strong>Tamanho:</strong> {{ inseto.size }} cm</p>
+                    <p><strong>Curiosidade:</strong> {{ inseto.curiosity }}</p>
+                    {% if inseto.extinct %}
+                        <p><strong>Status:</strong> Extinto</p>
+                    {% else %}
+                        <p><strong>Status:</strong> Vivo</p>
+                    {% endif %}
+                </div>
+
+                {% if inseto.photo %}
+                    <div class="inseto-img">
+                        <img src="{{ inseto.photo }}" alt="Foto de {{ inseto.name }}" width="200">
+                    </div>
+                {% endif %}
+
+                <div class="inseto-actions">
+                    <a href="/api/v1/inseto/home/edit/{{ inseto.id }}">Editar</a> |
+                    <a href="/api/v1/inseto/home/delete/{{ inseto.id }}" onclick="return confirm('Confirmar exclusão?')">Excluir</a>
+                </div>
             </li>
         {% endfor %}
     </ul>
