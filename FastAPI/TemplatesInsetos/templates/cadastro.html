@@ -1,27 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Cadastro de Insetos</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Insetos - EntomologIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #2d572c;
+            --color-secondary: #3a5a40;
+            --color-accent: #a3b18a;
+            --color-light: #dad7cd;
+            --color-dark: #1e2a1f;
+            --color-bg: #0e1911;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--color-bg);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--color-light);
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(58, 90, 64, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 20% 70%, rgba(58, 90, 64, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 80% 40%, rgba(58, 90, 64, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 90% 90%, rgba(58, 90, 64, 0.1) 0px, transparent 2px);
+            background-size: 300px 300px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(163, 177, 138, 0.4);
+            background: linear-gradient(to right, #a3b18a, #588157, #3a5a40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+            border-radius: 50%;
+        }
+        
+        .inseto-form {
+            background: linear-gradient(145deg, rgba(30, 42, 31, 0.8), rgba(45, 87, 44, 0.6));
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(163, 177, 138, 0.2);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .inseto-form::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--color-secondary), var(--color-accent));
+        }
+        
+        .inseto-form label {
+            display: block;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--color-accent);
+            position: relative;
+        }
+        
+        .inseto-form label::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(163, 177, 138, 0.3), transparent);
+        }
+        
+        .inseto-form input[type="text"],
+        .inseto-form input[type="number"],
+        .inseto-form input[type="url"],
+        .inseto-form textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 8px;
+            background: rgba(30, 42, 31, 0.5);
+            border: 1px solid rgba(163, 177, 138, 0.3);
+            border-radius: 8px;
+            color: var(--color-light);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .inseto-form input:focus,
+        .inseto-form textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(163, 177, 138, 0.3);
+        }
+        
+        .inseto-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .inseto-form input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(30, 42, 31, 0.5);
+            border: 1px solid rgba(163, 177, 138, 0.3);
+            border-radius: 4px;
+            margin-left: 10px;
+            position: relative;
+            top: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .inseto-form input[type="checkbox"]:checked {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+        
+        .inseto-form input[type="checkbox"]:checked::after {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--color-dark);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+        }
+        
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: block;
+            width: 100%;
+            margin: 30px 0 20px;
+            letter-spacing: 1px;
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, rgba(30, 42, 31, 0.8), rgba(45, 87, 44, 0.6));
+            color: var(--color-accent);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: 1px solid rgba(163, 177, 138, 0.3);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(45, 87, 44, 0.7), rgba(30, 42, 31, 0.8));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .hexagon {
+            position: absolute;
+            background: rgba(163, 177, 138, 0.05);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 1;
+        }
+        
+        .hexagon-1 {
+            width: 120px;
+            height: 104px;
+            top: 10%;
+            left: 5%;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .hexagon-2 {
+            width: 80px;
+            height: 69px;
+            bottom: 15%;
+            right: 7%;
+            animation: float 10s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .inseto-form {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Cadastro de Insetos</h1>
+    <div class="hexagon hexagon-1"></div>
+    <div class="hexagon hexagon-2"></div>
+    
+    <div class="container">
+        <h1>Cadastro de Insetos</h1>
 
-    <form action="/api/v1/inseto/home" method="post">
-        <label>Nome: <input name="name" required></label>
-        <label>Vida útil: <input type="number" name="lifetime" required></label>
-        <label>Foto: <input name="photo"></label>
-        <label>Tamanho (cm): <input type="number" name="size" required></label>
-        <label>Dieta: <input name="diet" required></label>
-        <label>Extinto: <input type="checkbox" name="extinct"></label>
-        <label>Curiosidade: <textarea name="curiosity"></textarea></label>
-        <button type="submit">Cadastrar</button>
-    </form>
+        <form class="inseto-form" action="/api/v1/inseto/home" method="post">
+            <label>Nome:
+                <input type="text" name="name" required>
+            </label>
 
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="/api/v1/inseto/home">
-            <button type="button">Voltar para Home</button>
-        </a>
+            <label>Vida útil:
+                <input type="number" name="lifetime" required>
+            </label>
+
+            <label>Foto (URL):
+                <input type="url" name="photo">
+            </label>
+
+            <label>Tamanho (cm):
+                <input type="number" name="size" step="0.1" required>
+            </label>
+
+            <label>Dieta:
+                <input type="text" name="diet" required>
+            </label>
+
+            <label>Extinto:
+                <input type="checkbox" name="extinct">
+            </label>
+
+            <label>Curiosidade:
+                <textarea name="curiosity"></textarea>
+            </label>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <div class="btn-container">
+            <a href="/api/v1/inseto/home" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Voltar para Home
+            </a>
+        </div>
     </div>
+
+    <script>
+        // Animação de entrada para o formulário
+        document.querySelector('.inseto-form').style.opacity = '0';
+        document.querySelector('.inseto-form').style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            document.querySelector('.inseto-form').style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            document.querySelector('.inseto-form').style.opacity = '1';
+            document.querySelector('.inseto-form').style.transform = 'translateY(0)';
+        }, 100);
+        
+        // Efeito hover para os inputs
+        const inputs = document.querySelectorAll('.inseto-form input, .inseto-form textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.style.color = 'var(--color-accent)';
+            });
+            
+            input.addEventListener('blur', () => {
+                input.parentElement.style.color = '';
+            });
+        });
+    </script>
 </body>
 </html>

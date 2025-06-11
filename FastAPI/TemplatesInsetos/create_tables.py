@@ -3,7 +3,7 @@ from core.database import engine
 from models import all_models
 
 async def create_tables() -> None:
-    print("criando tabelas no banco")
+    print("criando tabelas no bancozinho")
 
     async with engine.begin() as conn:
         await conn.run_sync(settings.DBBaseModel.metadata.drop_all)

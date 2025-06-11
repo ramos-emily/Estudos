@@ -1,45 +1,500 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Insetos</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EntomologIA - Catálogo de Insetos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #2d572c;
+            --color-secondary: #3a5a40;
+            --color-accent: #a3b18a;
+            --color-light: #dad7cd;
+            --color-dark: #1e2a1f;
+            --color-warning: #bc6c25;
+            --color-danger: #9e2a2b;
+            --color-bg: #0e1911;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--color-bg);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--color-light);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(58, 90, 64, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 20% 70%, rgba(58, 90, 64, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 80% 40%, rgba(58, 90, 64, 0.1) 0px, transparent 2px),
+                radial-gradient(circle at 90% 90%, rgba(58, 90, 64, 0.1) 0px, transparent 2px);
+            background-size: 300px 300px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            text-shadow: 0 0 15px rgba(163, 177, 138, 0.4);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(to right, #a3b18a, #588157, #3a5a40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+            border-radius: 50%;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .btn-new-insect {
+            background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn-new-insect::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn-new-insect:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .btn-new-insect:hover::before {
+            left: 100%;
+        }
+        
+        .insect-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .insect-card {
+            background: linear-gradient(145deg, rgba(30, 42, 31, 0.8), rgba(45, 87, 44, 0.6));
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(163, 177, 138, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .insect-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+        
+        .insect-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--color-secondary), var(--color-accent));
+        }
+        
+        .insect-content {
+            padding: 25px;
+        }
+        
+        .insect-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .insect-name {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1.8rem;
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+        
+        .insect-status {
+            font-size: 0.9rem;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .status-extinct {
+            background: linear-gradient(135deg, var(--color-danger), #7a1c1d);
+        }
+        
+        .status-alive {
+            background: linear-gradient(135deg, var(--color-secondary), #3a5a40);
+        }
+        
+        .insect-details {
+            margin: 20px 0;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--color-accent);
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-value {
+            flex: 1;
+            line-height: 1.5;
+        }
+        
+        .insect-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1e2a1f, #0e1911);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-top: 2px solid rgba(163, 177, 138, 0.3);
+        }
+        
+        .insect-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        
+        .insect-card:hover .insect-image img {
+            transform: scale(1.05);
+        }
+        
+        .insect-actions {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            gap: 25px;
+            border-top: 1px solid rgba(163, 177, 138, 0.2);
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--color-accent);
+            font-family: 'Exo 2', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .edit-btn {
+            background: linear-gradient(135deg, rgba(163, 177, 138, 0.2), rgba(88, 129, 87, 0.2));
+        }
+        
+        .delete-btn {
+            background: linear-gradient(135deg, rgba(158, 42, 43, 0.2), rgba(188, 108, 37, 0.2));
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .edit-btn:hover {
+            color: var(--color-accent);
+            background: linear-gradient(135deg, rgba(163, 177, 138, 0.3), rgba(88, 129, 87, 0.3));
+        }
+        
+        .delete-btn:hover {
+            color: #ff9e9e;
+            background: linear-gradient(135deg, rgba(158, 42, 43, 0.3), rgba(188, 108, 37, 0.3));
+        }
+        
+        .hexagon {
+            position: absolute;
+            background: rgba(163, 177, 138, 0.05);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            z-index: 1;
+        }
+        
+        .hexagon-1 {
+            width: 120px;
+            height: 104px;
+            top: 10%;
+            left: 5%;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .hexagon-2 {
+            width: 80px;
+            height: 69px;
+            bottom: 15%;
+            right: 7%;
+            animation: float 10s infinite ease-in-out;
+            animation-delay: 1s;
+        }
+        
+        .hexagon-3 {
+            width: 60px;
+            height: 52px;
+            top: 40%;
+            right: 15%;
+            animation: float 7s infinite ease-in-out;
+            animation-delay: 0.5s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: rgba(218, 215, 205, 0.6);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(163, 177, 138, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .insect-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Efeito de rede hexagonal no fundo */
+        .honeycomb-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.05;
+            background: 
+                linear-gradient(90deg, transparent 50%, rgba(163, 177, 138, 0.1) 50%),
+                linear-gradient(rgba(163, 177, 138, 0.1) 50%, transparent 50%);
+            background-size: 60px 60px;
+        }
+        
+        /* Animação para as cartas */
+        @keyframes cardEntry {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .insect-card {
+            animation: cardEntry 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .insect-card:nth-child(2) { animation-delay: 0.1s; }
+        .insect-card:nth-child(3) { animation-delay: 0.2s; }
+        .insect-card:nth-child(4) { animation-delay: 0.3s; }
+        .insect-card:nth-child(5) { animation-delay: 0.4s; }
+    </style>
 </head>
 <body>
-    <h1>Insetos Cadastrados</h1>
-
-    <div style="text-align: center; margin-bottom: 20px;">
-        <a href="/api/v1/inseto/cadastro">
-            <button type="button">Cadastrar Novo Inseto</button>
-        </a>
+    <div class="honeycomb-bg"></div>
+    <div class="hexagon hexagon-1"></div>
+    <div class="hexagon hexagon-2"></div>
+    <div class="hexagon hexagon-3"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Emis Inseto</h1>
+            <p>sem criatividade</p>
+        </div>
+        
+        <div class="actions">
+            <a href="/api/v1/inseto/cadastro">
+                <button class="btn-new-insect">
+                    <i class="fas fa-plus-circle"></i> Novo Inseto
+                </button>
+            </a>
+        </div>
+        
+        <div class="insect-list">
+            {% for inseto in insetos %}
+            <div class="insect-card">
+                <div class="insect-content">
+                    <div class="insect-header">
+                        <div class="insect-name">{{ inseto.name }}</div>
+                        {% if inseto.extinct %}
+                            <div class="insect-status status-extinct">EXTINTO</div>
+                        {% else %}
+                            <div class="insect-status status-alive">VIVO</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="insect-details">
+                        <div class="detail-item">
+                            <div class="detail-label"><i class="fas fa-leaf"></i> Dieta:</div>
+                            <div class="detail-value">{{ inseto.diet }}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label"><i class="fas fa-ruler"></i> Tamanho:</div>
+                            <div class="detail-value">{{ inseto.size }} cm</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label"><i class="fas fa-lightbulb"></i> Curiosidade:</div>
+                            <div class="detail-value">{{ inseto.curiosity }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if inseto.photo %}
+                <div class="insect-image">
+                    <img src="{{ inseto.photo }}" alt="Foto de {{ inseto.name }}">
+                </div>
+                {% else %}
+                <div class="insect-image">
+                    <div style="color: var(--color-accent); font-style: italic;">Sem imagem disponível</div>
+                </div>
+                {% endif %}
+                
+                <div class="insect-actions">
+                    <a href="/api/v1/inseto/home/edit/{{ inseto.id }}" class="action-btn edit-btn">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="/api/v1/inseto/home/delete/{{ inseto.id }}" onclick="return confirm('Confirmar exclusão?')" class="action-btn delete-btn">
+                        <i class="fas fa-trash"></i> Excluir
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="footer">
+            EntomologIA - Sistema de Catálogo de Insetos &copy; {{ current_year }}
+        </div>
     </div>
 
-    <ul class="inseto-lista">
-        {% for inseto in insetos %}
-            <li class="inseto-item">
-                <div class="inseto-info">
-                    <h2>{{ inseto.name }}</h2>
-                    <p><strong>Dieta:</strong> {{ inseto.diet }}</p>
-                    <p><strong>Tamanho:</strong> {{ inseto.size }} cm</p>
-                    <p><strong>Curiosidade:</strong> {{ inseto.curiosity }}</p>
-                    {% if inseto.extinct %}
-                        <p><strong>Status:</strong> Extinto</p>
-                    {% else %}
-                        <p><strong>Status:</strong> Vivo</p>
-                    {% endif %}
-                </div>
+    <script>
+        // Adicionando o ano atual no footer
+        document.querySelector('.footer').innerHTML = `EntomologIA - Sistema de Catálogo de Insetos &copy; ${new Date().getFullYear()}`;
 
-                {% if inseto.photo %}
-                    <div class="inseto-img">
-                        <img src="{{ inseto.photo }}" alt="Foto de {{ inseto.name }}" width="200">
-                    </div>
-                {% endif %}
-
-                <div class="inseto-actions">
-                    <a href="/api/v1/inseto/home/edit/{{ inseto.id }}">Editar</a> |
-                    <a href="/api/v1/inseto/home/delete/{{ inseto.id }}" onclick="return confirm('Confirmar exclusão?')">Excluir</a>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+        // Animação adicional para as cartas
+        document.querySelectorAll('.insect-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Efeito de confirmação para exclusão
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if(!confirm('Tem certeza que deseja excluir este inseto? Esta ação não pode ser desfeita.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+        
+        // Animação de entrada para os cartões
+        const cards = document.querySelectorAll('.insect-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
 </body>
 </html>

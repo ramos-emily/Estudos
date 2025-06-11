@@ -11,6 +11,7 @@ h1, h2 {
     text-align: center;
 }
 
+/* Formulários */
 form {
     background-color: #ffffffd1;
     padding: 20px;
@@ -23,11 +24,13 @@ form {
 form label {
     display: block;
     margin: 15px 0 5px;
+    font-weight: bold;
 }
 
 form input[type="text"],
 form input[type="number"],
 form input[type="checkbox"],
+form input[type="url"],
 form textarea {
     width: 100%;
     padding: 8px;
@@ -58,6 +61,7 @@ button:hover {
     background-color: #3e8e41;
 }
 
+/* Lista de insetos */
 ul {
     list-style: none;
     padding: 0;
@@ -76,8 +80,17 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
+li img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+/* Links */
 a {
     margin-left: 10px;
     text-decoration: none;
@@ -89,8 +102,19 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Responsividade */
 @media screen and (max-width: 640px) {
-    form, ul {
+    form,
+    ul {
         width: 90%;
+    }
+
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    button {
+        width: 100%;
     }
 }
