@@ -4,7 +4,7 @@ public class TesteProduto {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Criar cliente
+        // Crio cliente
         System.out.print("Digite o nome do cliente: ");
         String nomeCliente = scanner.nextLine();
 
@@ -14,10 +14,10 @@ public class TesteProduto {
         Cliente cliente = new Cliente(nomeCliente, emailCliente);
         cliente.Dados();
 
-        // Criar carrinho
+        // Crio carrinho
         Carrinho carrinho = new Carrinho();
 
-        // Adicionar produtos (so 3 mesmo porque sim, o mercado é meu)
+        // Adicionar os produtos
         for (int i = 1; i <= 3; i++) {
             System.out.println("\nProduto " + i + ":");
             System.out.print("Nome: ");
