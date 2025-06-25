@@ -1,0 +1,20 @@
+TECLADO AMERICANO
+
+
+"" = shift+~
+
+: = shift+ç
+
+/ = ;
+
+| = shift+]
+
+
+
+
+
+Iso
+
+Arch Linux > Worldwide > geo.mirror.pkgbuild.com > archlinux-x86_64.iso
+
+VirtualBox
