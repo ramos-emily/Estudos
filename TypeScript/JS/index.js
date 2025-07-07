@@ -1,7 +1,8 @@
 function logar(e){
     e.preventDefault()
-    const username = document.getElementById("username").value
-    const password = document.getElementById("password").value
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const error = document.getElementById("error");
 
     const url = "https://dummyjson.com/auth/login";
 
@@ -12,12 +13,14 @@ function logar(e){
             username: username,
             password: password,
         }), 
-    }).then(res => res.json()).then(res => {
-        if (password != "emilyspass"){
-            error.innerHTML = "aaaa ta errado";
+    }).then(res => {
+        if (!res.ok) {
+            throw new Error("Login inválido");
         }
-        else{
-            window.location.href = "./home.html"
-        }
+        return res.json();
+    }).then(data => {
+        window.location.href = "./home.html"
+    }).catch(err => {
+        error.innerText = "Usuario ou senha incorretos.";
     });
 }
