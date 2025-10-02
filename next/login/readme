@@ -1,0 +1,8 @@
+"pg" funcionar
+npm i --save-dev @types/pg
+
+
+
+
+/app raiz -> React do lado do cliente (oq o usuario ve)
+/app/api -> Express embutido no Next (codigo do servidor)
